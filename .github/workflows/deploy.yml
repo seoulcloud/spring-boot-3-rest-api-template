@@ -40,6 +40,23 @@ jobs:
           scp -o StrictHostKeyChecking=no build/libs/*.jar ubuntu@${{ secrets.EC2_HOST }}:/home/ubuntu/app/
 
       # 6. EC2에 접속해서 Docker 이미지 빌드 및 컨테이너 실행
+
+      - name: install Docker if not installed # 도커 설치가 안되었을때 설치 진행
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << EOF
+            command -v docker >/dev/null 2>&1 || (
+            sudo apt update
+            sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
+            curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+            echo "deb [arch=\$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \$(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+            sudo apt update
+            sudo apt install -y docker-ce
+            sudo usermod -aG docker ubuntu
+            )
+          newgrp docker
+          EOF
+
+      
       - name: Build and Run Docker on EC2
         run: |
           ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << EOF
