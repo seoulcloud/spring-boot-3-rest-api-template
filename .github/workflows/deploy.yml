@@ -19,8 +19,11 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 17
+          
+      # 3.Gradle 권한생성 > 빌드 실행 (jar 생성)
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
 
-      # 3. Gradle 빌드 실행 (jar 생성)
       - name: Build with Gradle
         run: ./gradlew clean build
         # build/libs 디렉토리에 jar 파일 생성됨
