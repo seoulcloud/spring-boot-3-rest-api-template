@@ -34,11 +34,11 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.EC2_PRIVATE_KEY }}
 
-      # 5. 완성된 jar 파일만 EC2로 복사
+      # 5. 완성된 jar 파일과 Dockerfile EC2로 복사
       - name: Copy Jar to EC2
         run: |
           scp -o StrictHostKeyChecking=no build/libs/*.jar ubuntu@${{ secrets.EC2_HOST }}:/home/ubuntu/app/
-
+          scp Dockerfile ubuntu@${{ secrets.EC2_HOST }}:/home/ubuntu/app/
       # 6. EC2에 접속해서 Docker 이미지 빌드 및 컨테이너 실행
 
       - name: install Docker if not installed # 도커 설치가 안되었을때 설치 진행
