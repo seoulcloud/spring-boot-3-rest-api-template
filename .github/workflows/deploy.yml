@@ -27,7 +27,7 @@ jobs:
 
       # 4. SSH 에이전트 실행 및 private key 등록
       - name: Setup SSH
-        uses: webfactory/ssh-agent@v0.8.1
+        uses: webfactory/ssh-agent@v0.9.1
         with:
           ssh-private-key: ${{ secrets.EC2_PRIVATE_KEY }}
 
