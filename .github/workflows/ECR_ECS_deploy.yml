@@ -1,8 +1,8 @@
 name: Deploy to ECS
 
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
+    # branches: [ main ]   # main 브랜치에 푸시될 때 워크플로우 실행
 
 jobs:
   deploy:
